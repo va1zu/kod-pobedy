@@ -1,13 +1,10 @@
-/* =========================================
-   ЦВЕТОВАЯ ПАЛИТРА И БАЗОВЫЕ НАСТРОЙКИ
-   ========================================= */
 :root {
-    --primary: #8B0000;       /* Бордовый (Красная Армия) */
+    --primary: #8B0000;       
     --primary-hover: #660000;
-    --secondary: #2e5932;     /* Военный зеленый */
+    --secondary: #2e5932;     
     --secondary-hover: #1e3b21;
     --dark: #333333;
-    --light-bg: #f5f0e6;      /* Светло-бежевый фон (бумага) */
+    --light-bg: #f5f0e6;      
     --white: #ffffff;
     --border: #e0e0e0;
     --gold: #FFD700;
@@ -18,60 +15,27 @@ body {
     background-color: #d1c9b8;
     background-image: radial-gradient(#a39a83 1px, transparent 1px);
     background-size: 20px 20px;
-    margin: 0;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    color: var(--dark);
-    box-sizing: border-box;
+    margin: 0; padding: 10px;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; color: var(--dark); box-sizing: border-box;
 }
 
-/* =========================================
-   ГЛАВНЫЙ КОНТЕЙНЕР (Адаптивный)
-   ========================================= */
 .app-container {
-    background: var(--white);
-    width: 100%;
-    max-width: 450px; /* Ограничение для ПК, на телефоне займет 100% */
-    min-height: 600px;
-    border-radius: 20px;
+    background: var(--white); width: 100%; max-width: 450px;
+    min-height: 600px; border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    flex-direction: column;
+    overflow: hidden; position: relative;
+    display: flex; flex-direction: column;
 }
 
-/* =========================================
-   ЭКРАНЫ И ОТСТУПЫ
-   ========================================= */
-.screen { 
-    display: none; 
-    animation: fadeIn 0.4s ease; 
-    flex-grow: 1;
-    flex-direction: column;
-}
+.screen { display: none; animation: fadeIn 0.4s ease; flex-grow: 1; flex-direction: column; }
 .screen.active { display: flex; }
 .content-padding { padding: 25px; }
 .scrollable { overflow-y: auto; max-height: 85vh; }
 
-@keyframes fadeIn { 
-    from { opacity: 0; transform: translateY(10px); } 
-    to { opacity: 1; transform: translateY(0); } 
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* =========================================
-   ТИПОГРАФИКА И ШАПКИ
-   ========================================= */
-.header-banner {
-    background: var(--primary);
-    color: var(--white);
-    padding: 35px 20px;
-    text-align: center;
-    border-bottom: 5px solid var(--gold);
-}
+.header-banner { background: var(--primary); color: var(--white); padding: 35px 20px; text-align: center; border-bottom: 5px solid var(--gold); }
 .header-banner.small-banner { padding: 20px; }
 .header-banner h1 { margin: 0; font-size: 28px; letter-spacing: 1px; text-transform: uppercase; }
 .header-banner h2 { color: var(--white); margin: 0; font-size: 22px; }
@@ -83,26 +47,10 @@ h2 { color: var(--primary); margin: 0 0 15px 0; font-size: 22px; }
 .text-muted { color: #777; font-size: 14px; }
 .text-highlight { color: var(--secondary); font-weight: bold; }
 
-/* =========================================
-   КНОПКИ И ЭЛЕМЕНТЫ УПРАВЛЕНИЯ
-   ========================================= */
 .button-group { display: flex; flex-direction: column; gap: 12px; }
 
-button {
-    background: var(--primary);
-    color: var(--white);
-    border: none;
-    padding: 16px;
-    width: 100%;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-bottom: 12px;
-}
+button { background: var(--primary); color: var(--white); border: none; padding: 16px; width: 100%; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.2s ease; margin-bottom: 12px; }
 button:active { transform: scale(0.98); }
-
 .btn-primary { background: var(--primary); }
 .btn-primary:hover { background: var(--primary-hover); }
 .btn-success { background: var(--secondary); }
@@ -116,50 +64,21 @@ button:active { transform: scale(0.98); }
 .divider { border: 0; height: 1px; background: var(--border); margin: 25px 0; }
 .mt-20 { margin-top: 20px; }
 
-/* =========================================
-   ФОРМЫ И ПОЛЯ ВВОДА
-   ========================================= */
 .input-label { display: block; font-size: 13px; font-weight: bold; color: #555; margin: 15px 0 5px 0; }
-.input-field {
-    width: 100%;
-    padding: 15px;
-    margin-bottom: 10px;
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    box-sizing: border-box;
-    font-size: 15px;
-    font-family: inherit;
-    transition: border-color 0.3s;
-}
+.input-field { width: 100%; padding: 15px; margin-bottom: 10px; border: 2px solid var(--border); border-radius: 10px; box-sizing: border-box; font-size: 15px; font-family: inherit; transition: border-color 0.3s; }
 .input-field:focus { outline: none; border-color: var(--primary); }
 .border-green { border-color: var(--secondary) !important; background-color: #f0fdf4; }
 
-/* =========================================
-   АДМИН-ПАНЕЛЬ (СПИСКИ)
-   ========================================= */
 .admin-list { display: flex; flex-direction: column; gap: 10px; max-height: 40vh; overflow-y: auto; margin-bottom: 20px; padding-right: 5px; }
-.admin-item { 
-    display: flex; justify-content: space-between; align-items: center; 
-    background: #f9f9f9; padding: 12px 15px; border-radius: 10px; 
-    border-left: 4px solid var(--secondary); font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
+.admin-item { display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 12px 15px; border-radius: 10px; border-left: 4px solid var(--secondary); font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 .admin-item-controls { display: flex; gap: 5px; }
 .admin-item button { padding: 8px 12px; margin: 0; width: auto; font-size: 14px; border-radius: 6px; }
 
-/* =========================================
-   ИГРОВОЙ ИНТЕРФЕЙС
-   ========================================= */
-.game-header { 
-    display: flex; justify-content: space-between; align-items: center; 
-    background: var(--light-bg); padding: 15px 25px; border-bottom: 1px solid var(--border);
-}
+.game-header { display: flex; justify-content: space-between; align-items: center; background: var(--light-bg); padding: 15px 25px; border-bottom: 1px solid var(--border); }
 .badge { background: var(--primary); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
 .step-counter { font-weight: bold; color: #666; font-size: 14px; }
 
-.format-badge {
-    display: inline-block; padding: 6px 16px; background: var(--secondary); color: white;
-    border-radius: 20px; font-size: 12px; margin-bottom: 15px; text-transform: uppercase; font-weight: bold;
-}
+.format-badge { display: inline-block; padding: 6px 16px; background: var(--secondary); color: white; border-radius: 20px; font-size: 12px; margin-bottom: 15px; text-transform: uppercase; font-weight: bold; }
 
 .q-text { font-size: 18px; margin: 0 0 20px 0; font-weight: bold; line-height: 1.4; text-align: center; color: var(--dark); }
 
@@ -167,25 +86,16 @@ button:active { transform: scale(0.98); }
 #game-photo { width: 100%; max-height: 220px; object-fit: contain; display: block; }
 
 .options-grid { display: flex; flex-direction: column; gap: 10px; }
-.opt-btn { 
-    background: var(--white); color: var(--dark); border: 2px solid var(--border); 
-    font-weight: 600; font-size: 15px; padding: 15px; margin: 0;
-}
+.opt-btn { background: var(--white); color: var(--dark); border: 2px solid var(--border); font-weight: 600; font-size: 15px; padding: 15px; margin: 0; }
 .opt-btn.correct { background: var(--secondary) !important; color: white !important; border-color: var(--secondary) !important; }
 .opt-btn.wrong { background: #d32f2f !important; color: white !important; border-color: #d32f2f !important; }
 
-/* =========================================
-   РЕЗУЛЬТАТЫ И ТАБЛИЦА ЛИДЕРОВ
-   ========================================= */
 .medal-big { font-size: 70px; margin: 10px 0; }
 .score-text { font-size: 18px; margin-bottom: 25px; line-height: 1.5; }
 .highlight-text { font-size: 32px; font-weight: 900; color: var(--primary); display: block; margin-top: 10px;}
 
-.leader-list { display: flex; flex-direction: column; gap: 10px; max-height: 50vh; overflow-y: auto; }
-.leader-card {
-    display: flex; align-items: center; padding: 12px 15px; 
-    background: var(--white); border-radius: 12px; border: 1px solid var(--border);
-}
+.leader-list { display: flex; flex-direction: column; gap: 10px; max-height: 50vh; overflow-y: auto; padding-right: 5px; }
+.leader-card { display: flex; align-items: center; padding: 12px 15px; background: var(--white); border-radius: 12px; border: 1px solid var(--border); }
 .leader-card:nth-child(1) { border-left: 5px solid var(--gold); background: #fffdf0; }
 .leader-card:nth-child(2) { border-left: 5px solid #C0C0C0; background: #fafafa; }
 .leader-card:nth-child(3) { border-left: 5px solid #CD7F32; background: #fffaf5; }

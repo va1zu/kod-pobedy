@@ -18,11 +18,13 @@
             
             <div class="content-padding">
                 <h3 class="section-title">Выберите кампанию:</h3>
-                <div id="game-list-container" class="button-group"></div>
+                <div id="game-list-container" class="button-group">
+                    <p class="text-center text-muted">Загрузка данных из штаба...</p>
+                </div>
                 
                 <hr class="divider">
-                <button onclick="showLeaderboard()" class="btn-alt">🏆 Таблица лидеров</button>
-                <button onclick="showLogin()" class="btn-text">⚙️ Модерирование</button>
+                <button onclick="window.showLeaderboard()" class="btn-alt">🏆 Таблица лидеров</button>
+                <button onclick="window.showLogin()" class="btn-text">⚙️ Модерирование</button>
             </div>
         </div>
 
@@ -31,26 +33,26 @@
                 <h2>Модерирование</h2>
                 <p class="text-muted">Введите пароль администратора</p>
                 <input type="password" id="admin-pass" placeholder="Пароль" class="input-field text-center">
-                <button onclick="checkLogin()" class="btn-primary">Войти</button>
-                <button onclick="showMenu()" class="btn-dark">Вернуться в меню</button>
+                <button onclick="window.checkLogin()" class="btn-primary">Войти</button>
+                <button onclick="window.showMenu()" class="btn-dark">Вернуться в меню</button>
             </div>
         </div>
 
         <div id="screen-admin" class="screen">
             <div class="content-padding">
                 <h2>Управление уровнями</h2>
-                <button onclick="createNewGame()" class="btn-success">+ Создать кампанию</button>
+                <button onclick="window.createNewGame()" class="btn-success">+ Создать кампанию</button>
                 <div id="admin-games-list" class="admin-list"></div>
-                <button onclick="showMenu()" class="btn-dark">Выйти в меню</button>
+                <button onclick="window.showMenu()" class="btn-dark">Выйти в меню</button>
             </div>
         </div>
 
         <div id="screen-questions-manager" class="screen">
             <div class="content-padding">
                 <h2 id="manager-title">Вопросы</h2>
-                <button onclick="openEditor()" class="btn-success">+ Добавить задание</button>
+                <button onclick="window.openEditor()" class="btn-success">+ Добавить задание</button>
                 <div id="admin-questions-list" class="admin-list"></div>
-                <button onclick="switchScreen('screen-admin')" class="btn-dark">К списку кампаний</button>
+                <button onclick="window.switchScreen('screen-admin')" class="btn-dark">К списку кампаний</button>
             </div>
         </div>
 
@@ -59,7 +61,7 @@
                 <h2 id="editor-title">Редактор задания</h2>
                 
                 <label class="input-label">Формат задания:</label>
-                <select id="edit-type" class="input-field" onchange="toggleEditorFields()">
+                <select id="edit-type" class="input-field" onchange="window.toggleEditorFields()">
                     <option value="photo">Угадай по фото</option>
                     <option value="date">Сопоставь дату и событие</option>
                     <option value="error">Найди ошибку в тексте</option>
@@ -81,8 +83,8 @@
                     <input type="text" id="edit-opt3" placeholder="Ложный вариант 3" class="input-field">
                 </div>
                 
-                <button onclick="saveQuestion()" class="btn-success">💾 Сохранить</button>
-                <button onclick="switchScreen('screen-questions-manager')" class="btn-dark">Отмена</button>
+                <button onclick="window.saveQuestion()" class="btn-success">💾 Сохранить</button>
+                <button onclick="window.switchScreen('screen-questions-manager')" class="btn-dark">Отмена</button>
             </div>
         </div>
 
@@ -116,9 +118,9 @@
                 <div class="name-input-section">
                     <p class="text-muted">Впишите свое имя для истории:</p>
                     <input type="text" id="player-name" placeholder="Например: Иван Иванов" class="input-field text-center">
-                    <button onclick="submitScore()" class="btn-primary">Записать результат</button>
+                    <button onclick="window.submitScore()" class="btn-primary">Записать результат</button>
                 </div>
-                <button onclick="showMenu()" class="btn-text mt-20">Выйти без сохранения</button>
+                <button onclick="window.showMenu()" class="btn-text mt-20">Выйти без сохранения</button>
             </div>
         </div>
 
@@ -128,12 +130,12 @@
             </div>
             <div class="content-padding">
                 <div id="leader-data" class="leader-list"></div>
-                <button onclick="showMenu()" class="btn-dark mt-20">Вернуться в меню</button>
+                <button onclick="window.showMenu()" class="btn-dark mt-20">Вернуться в меню</button>
             </div>
         </div>
 
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
