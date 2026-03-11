@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Код Победы | Исторический Квиз</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div id="screen-menu" class="screen active">
+            <div class="header-banner">
+                <h1>Код Победы</h1>
+                <p class="subtitle">Интерактивная история ВОВ</p>
+            </div>
+            
+            <div class="content-padding">
+                <h3 class="section-title">Выберите кампанию:</h3>
+                <div id="game-list-container" class="button-group"></div>
+                
+                <hr class="divider">
+                <button onclick="showLeaderboard()" class="btn-alt">🏆 Таблица лидеров</button>
+                <button onclick="showLogin()" class="btn-text">⚙️ Модерирование</button>
+            </div>
+        </div>
+
+        <div id="screen-login" class="screen">
+            <div class="content-padding text-center">
+                <h2>Модерирование</h2>
+                <p class="text-muted">Введите пароль администратора</p>
+                <input type="password" id="admin-pass" placeholder="Пароль" class="input-field text-center">
+                <button onclick="checkLogin()" class="btn-primary">Войти</button>
+                <button onclick="showMenu()" class="btn-dark">Вернуться в меню</button>
+            </div>
+        </div>
+
+        <div id="screen-admin" class="screen">
+            <div class="content-padding">
+                <h2>Управление уровнями</h2>
+                <button onclick="createNewGame()" class="btn-success">+ Создать кампанию</button>
+                <div id="admin-games-list" class="admin-list"></div>
+                <button onclick="showMenu()" class="btn-dark">Выйти в меню</button>
+            </div>
+        </div>
+
+        <div id="screen-questions-manager" class="screen">
+            <div class="content-padding">
+                <h2 id="manager-title">Вопросы</h2>
+                <button onclick="openEditor()" class="btn-success">+ Добавить задание</button>
+                <div id="admin-questions-list" class="admin-list"></div>
+                <button onclick="switchScreen('screen-admin')" class="btn-dark">К списку кампаний</button>
+            </div>
+        </div>
+
+        <div id="screen-editor" class="screen scrollable">
+            <div class="content-padding">
+                <h2 id="editor-title">Редактор задания</h2>
+                
+                <label class="input-label">Формат задания:</label>
+                <select id="edit-type" class="input-field" onchange="toggleEditorFields()">
+                    <option value="photo">Угадай по фото</option>
+                    <option value="date">Сопоставь дату и событие</option>
+                    <option value="error">Найди ошибку в тексте</option>
+                </select>
+
+                <label class="input-label">Текст вопроса или события:</label>
+                <textarea id="edit-q" placeholder="Текст вопроса..." class="input-field" rows="3"></textarea>
+                
+                <div id="div-edit-img">
+                    <label class="input-label">Ссылка на фото (URL):</label>
+                    <input type="text" id="edit-img" placeholder="https://..." class="input-field">
+                </div>
+
+                <div class="options-box">
+                    <p class="input-label text-highlight" id="hint-text">Правильный ответ (в первое поле):</p>
+                    <input type="text" id="edit-opt0" placeholder="Правильный ответ" class="input-field border-green">
+                    <input type="text" id="edit-opt1" placeholder="Ложный вариант 1" class="input-field">
+                    <input type="text" id="edit-opt2" placeholder="Ложный вариант 2" class="input-field">
+                    <input type="text" id="edit-opt3" placeholder="Ложный вариант 3" class="input-field">
+                </div>
+                
+                <button onclick="saveQuestion()" class="btn-success">💾 Сохранить</button>
+                <button onclick="switchScreen('screen-questions-manager')" class="btn-dark">Отмена</button>
+            </div>
+        </div>
+
+        <div id="screen-game" class="screen">
+            <div class="game-header">
+                <div id="game-title-display" class="badge">Уровень</div>
+                <div id="game-step" class="step-counter">1/1</div>
+            </div>
+            
+            <div class="content-padding">
+                <div class="text-center">
+                    <span id="game-format-label" class="format-badge">Задание</span>
+                </div>
+                
+                <h3 id="game-question" class="q-text">Текст вопроса...</h3>
+                
+                <div id="photo-container" class="photo-wrapper">
+                    <img id="game-photo" src="" alt="Фото">
+                </div>
+                
+                <div id="game-options" class="options-grid"></div>
+            </div>
+        </div>
+
+        <div id="screen-result" class="screen">
+            <div class="content-padding text-center">
+                <div class="medal-big">🎖️</div>
+                <h2>Операция завершена!</h2>
+                <p class="score-text">Ваш результат: <br><span id="final-score" class="highlight-text">0/0</span></p>
+                
+                <div class="name-input-section">
+                    <p class="text-muted">Впишите свое имя для истории:</p>
+                    <input type="text" id="player-name" placeholder="Например: Иван Иванов" class="input-field text-center">
+                    <button onclick="submitScore()" class="btn-primary">Записать результат</button>
+                </div>
+                <button onclick="showMenu()" class="btn-text mt-20">Выйти без сохранения</button>
+            </div>
+        </div>
+
+        <div id="screen-leaderboard" class="screen">
+            <div class="header-banner small-banner">
+                <h2>🏆 Доска почета</h2>
+            </div>
+            <div class="content-padding">
+                <div id="leader-data" class="leader-list"></div>
+                <button onclick="showMenu()" class="btn-dark mt-20">Вернуться в меню</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
