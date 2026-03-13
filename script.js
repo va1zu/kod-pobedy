@@ -5,13 +5,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebas
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyChsg1t0QKS_sSThC0KHZbluyNxMDkRlJo",
-  authDomain: "kod-pobedy.firebaseapp.com",
-  databaseURL: "https://kod-pobedy-default-rtdb.firebaseio.com",
-  projectId: "kod-pobedy",
-  storageBucket: "kod-pobedy.firebasestorage.app",
-  messagingSenderId: "372401802248",
-  appId: "1:372401802248:web:e2080dfbd9e335e30b55bd"
+    apiKey: "AIzaSyChsg1t0QKS_sSThC0KHZbluyNxMDkRlJo",
+    authDomain: "kod-pobedy.firebaseapp.com",
+    databaseURL: "https://kod-pobedy-default-rtdb.firebaseio.com",
+    projectId: "kod-pobedy",
+    storageBucket: "kod-pobedy.firebasestorage.app",
+    messagingSenderId: "372401802248",
+    appId: "1:372401802248:web:e2080dfbd9e335e30b55bd"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -57,13 +57,10 @@ let currentEditingQuestionIndex = null;
 // ==========================================
 // 2. СИНХРОНИЗАЦИЯ С ОБЛАКОМ (В РЕАЛЬНОМ ВРЕМЕНИ)
 // ==========================================
-
-// Слушаем изменения кампаний
 onValue(ref(db, 'games'), (snapshot) => {
     if (snapshot.exists()) {
         myGames = snapshot.val();
     } else {
-        // Если база пустая, загружаем стандартные вопросы
         myGames = defaultGames;
         set(ref(db, 'games'), myGames);
     }
@@ -72,7 +69,6 @@ onValue(ref(db, 'games'), (snapshot) => {
     if(currentEditingGameId) renderQuestionsList();
 });
 
-// Слушаем изменения таблицы лидеров
 onValue(ref(db, 'leaders'), (snapshot) => {
     if (snapshot.exists()) {
         leaders = snapshot.val();
@@ -87,13 +83,15 @@ onValue(ref(db, 'leaders'), (snapshot) => {
 // ==========================================
 function switchScreen(screenId) {
     let screens = document.querySelectorAll('.screen');
-    for (let i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+    for (let i = 0; i < screens.length; i++) {
+        screens[i].classList.remove('active');
+    }
     document.getElementById(screenId).classList.add('active');
 }
 
-function showMenu() { switchScreen('screen-menu'); }
-function showLogin() { switchScreen('screen-login'); }
-function showLeaderboard() { switchScreen('screen-leaderboard'); updateLeaderboardUI(); }
+function showMenu() { switchScreen('menu'); }
+function showLogin() { switchScreen('login'); }
+function showLeaderboard() { switchScreen('lider'); updateLeaderboardUI(); }
 
 // ==========================================
 // 4. МОДЕРИРОВАНИЕ (АДМИНКА)
@@ -103,7 +101,7 @@ function checkLogin() {
     if (input.value === PASS) {
         input.value = ""; 
         renderAdminGames();
-        switchScreen('screen-admin');
+        switchScreen('admin');
     } else { 
         alert("Неверный пароль!"); 
     }
@@ -132,14 +130,14 @@ function createNewGame() {
     let title = prompt("Введите название новой кампании:");
     if (title && title.trim() !== "") {
         myGames.push({ id: Date.now(), title: title, questions: [] });
-        set(ref(db, 'games'), myGames); // Сохраняем в облако
+        set(ref(db, 'games'), myGames);
     }
 }
 
 function deleteGame(id) {
     if (confirm("Вы уверены, что хотите удалить эту кампанию?")) { 
         myGames = myGames.filter(game => game.id !== id); 
-        set(ref(db, 'games'), myGames); // Сохраняем в облако
+        set(ref(db, 'games'), myGames);
     }
 }
 
@@ -148,7 +146,7 @@ function manageQuestions(id) {
     let game = myGames.find(g => g.id === id);
     document.getElementById('manager-title').innerText = game.title;
     renderQuestionsList();
-    switchScreen('screen-questions-manager');
+    switchScreen('manager');
 }
 
 function renderQuestionsList() {
@@ -197,7 +195,7 @@ function openEditor(index = null) {
         document.getElementById('edit-opt3').value = '';
     }
     toggleEditorFields();
-    switchScreen('screen-editor');
+    switchScreen('editor');
 }
 
 function saveQuestion() {
@@ -224,14 +222,14 @@ function saveQuestion() {
         game.questions.push(newQuestion);
     }
     
-    set(ref(db, 'games'), myGames); // Сохраняем в облако
-    switchScreen('screen-questions-manager');
+    set(ref(db, 'games'), myGames);
+    switchScreen('manager');
 }
 
 function deleteQuestion(index) {
     if (confirm("Удалить этот вопрос?")) {
         myGames.find(g => g.id === currentEditingGameId).questions.splice(index, 1);
-        set(ref(db, 'games'), myGames); // Сохраняем в облако
+        set(ref(db, 'games'), myGames);
     }
 }
 
@@ -256,7 +254,7 @@ function playGame(id) {
     }
     currentQuestionIndex = 0; 
     score = 0;
-    switchScreen('screen-game');
+    switchScreen('game');
     showQuestion();
 }
 
@@ -268,17 +266,28 @@ function showQuestion() {
     document.getElementById('game-question').innerText = q.q;
     
     let badge = document.getElementById('game-format-label');
-    if (q.type === 'photo') { badge.innerText = "Угадай по фото"; badge.style.backgroundColor = "var(--secondary)"; } 
-    else if (q.type === 'date') { badge.innerText = "Вспомни дату"; badge.style.backgroundColor = "#B71C1C"; } 
-    else { badge.innerText = "Найди ошибку"; badge.style.backgroundColor = "#E65100"; }
+    if (q.type === 'photo') { 
+        badge.innerText = "Угадай по фото"; 
+        badge.style.backgroundColor = "var(--secondary)"; 
+    } else if (q.type === 'date') { 
+        badge.innerText = "Вспомни дату"; 
+        badge.style.backgroundColor = "#B71C1C"; 
+    } else { 
+        badge.innerText = "Найди ошибку"; 
+        badge.style.backgroundColor = "#E65100"; 
+    }
 
     let pCont = document.getElementById('photo-container');
     let photoEl = document.getElementById('game-photo');
+    photoEl.setAttribute("referrerpolicy", "no-referrer"); // Защита для работы фото из Википедии
+
     if (q.type === 'photo') { 
         pCont.style.display = 'block'; 
         photoEl.src = q.img ? q.img : 'https://via.placeholder.com/400x200?text=Нет+фото';
         photoEl.onerror = function() { this.src = 'https://via.placeholder.com/400x200?text=Ошибка+загрузки'; };
-    } else { pCont.style.display = 'none'; }
+    } else { 
+        pCont.style.display = 'none'; 
+    }
 
     let optCont = document.getElementById('game-options');
     optCont.innerHTML = '';
@@ -292,24 +301,37 @@ function showQuestion() {
         let btn = document.createElement('button');
         btn.className = 'opt-btn';
         btn.innerText = answer.text;
-        btn.onclick = function() { window.checkAnswer(btn, answer.isCorrect, q.options[0]); };
+        
+        // ЖЕЛЕЗОБЕТОННЫЙ ТРЮК: Вшиваем скрытую метку правильного ответа прямо в кнопку
+        btn.dataset.correct = answer.isCorrect; 
+        
+        btn.onclick = function() { window.checkAnswer(btn, answer.isCorrect); };
         optCont.appendChild(btn);
     }
 }
 
-function checkAnswer(clickedBtn, isCorrect, correctText) {
+function checkAnswer(clickedBtn, isCorrect) {
     let allBtns = document.getElementById('game-options').children;
-    for (let i = 0; i < allBtns.length; i++) allBtns[i].disabled = true;
     
-    if (isCorrect) { 
-        clickedBtn.classList.add('correct'); score++; 
-    } else { 
-        clickedBtn.classList.add('wrong'); 
-        for (let i = 0; i < allBtns.length; i++) {
-            if (allBtns[i].innerText === correctText) allBtns[i].classList.add('correct');
+    // Перебираем все кнопки на экране
+    for (let i = 0; i < allBtns.length; i++) {
+        allBtns[i].disabled = true; // Сразу блокируем все кнопки от повторных кликов
+        
+        // Если у кнопки есть скрытая метка правильного ответа - всегда красим её в ЗЕЛЕНЫЙ
+        if (allBtns[i].dataset.correct === "true") {
+            allBtns[i].classList.add('correct');
         }
     }
     
+    // Если игрок ответил верно, добавляем очко
+    if (isCorrect) { 
+        score++; 
+    } else { 
+        // Если игрок ошибся - красим ЕГО нажатую кнопку в КРАСНЫЙ
+        clickedBtn.classList.add('wrong'); 
+    }
+    
+    // Ждем полторы секунды и показываем следующий вопрос
     setTimeout(function() {
         currentQuestionIndex++;
         if (currentQuestionIndex < activeGame.questions.length) showQuestion();
@@ -318,7 +340,7 @@ function checkAnswer(clickedBtn, isCorrect, correctText) {
 }
 
 function finishGame() {
-    switchScreen('screen-result');
+    switchScreen('result');
     document.getElementById('final-score').innerText = score + " из " + activeGame.questions.length;
 }
 
@@ -326,13 +348,13 @@ function finishGame() {
 // 6. ТАБЛИЦА ЛИДЕРОВ (СОХРАНЕНИЕ В ОБЛАКО)
 // ==========================================
 function submitScore() {
-    let name = document.getElementById('player-name').value.trim() || "Неизвестный герой";
+    let name = document.getElementById('player-name').value.trim() || "Гость";
     
     leaders.push({ name: name, score: score, game: activeGame.title });
     leaders.sort((a, b) => b.score - a.score);
     leaders = leaders.slice(0, 20); // Оставляем топ-20
     
-    set(ref(db, 'leaders'), leaders); // Отправляем в облако
+    set(ref(db, 'leaders'), leaders);
     
     document.getElementById('player-name').value = '';
     showLeaderboard();

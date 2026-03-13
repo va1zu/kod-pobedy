@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Код Победы | Исторический Квиз</title>
     
+    <link rel="icon" type="image/png" href="https://png.pngtree.com/png-vector/20240914/ourmid/pngtree-565312-png-image_12750713.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -16,11 +17,11 @@
     <div class="app-container">
         <div class="george-ribbon"></div>
         
-        <div id="screen-menu" class="screen active">
+        <div id="menu" class="screen active">
             <div class="menu-cover">
                 <div class="logo-wrapper">
                     <div class="css-ribbon"></div>
-                    <img src="orden.png" alt="Орден" class="main-logo-star">
+                    <img src="orden.png" alt="Орден Отечественной Войны" class="main-logo-star">
                 </div>
                 <h1 class="main-title">КОД ПОБЕДЫ</h1>
                 <p class="subtitle">ИСТОРИЧЕСКАЯ ХРОНИКА ВОВ</p>
@@ -29,13 +30,109 @@
             <div class="content-padding">
                 <h3 class="section-title"><span>ВЫБЕРИТЕ ОПЕРАЦИЮ</span></h3>
                 <div id="game-list-container" class="button-group">
-                    <p class="text-center text-muted">Загрузка данных...</p>
+                    <p class="text-center text-muted">Связь со штабом...</p>
                 </div>
+                
                 <hr class="divider">
                 <button onclick="window.showLeaderboard()" class="btn-alt">⭐ ДОСКА ПОЧЁТА</button>
-                <button onclick="window.showLogin()" class="btn-text">Служебный вход</button>
+                <button onclick="window.showLogin()" class="btn-text">Служебный вход (Модерирование)</button>
             </div>
         </div>
+
+        <div id="login" class="screen">
+            <div class="content-padding text-center centered-content">
+                <h2>Админ - панель</h2>
+                <p class="text-muted">Введите пароль</p>
+                <input type="password" id="admin-pass" placeholder="Введите пароль" class="input-field text-center">
+                <button onclick="window.checkLogin()" class="btn-primary">Вход</button>
+                <button onclick="window.showMenu()" class="btn-dark">НАЗАД В МЕНЮ</button>
+            </div>
+        </div>
+
+        <div id="admin" class="screen">
+            <div class="content-padding">
+                <h2>Управление операциями</h2>
+                <button onclick="window.createNewGame()" class="btn-success">+ НОВАЯ ИГРА</button>
+                <div id="admin-games-list" class="admin-list"></div>
+                <button onclick="window.showMenu()" class="btn-dark">ВЫХОД</button>
+            </div>
+        </div>
+
+        <div id="manager" class="screen">
+            <div class="content-padding">
+                <h2 id="manager-title">Материалы дела</h2>
+                <button onclick="window.openEditor()" class="btn-success">+ ДОБАВИТЬ ДОКУМЕНТ</button>
+                <div id="admin-questions-list" class="admin-list"></div>
+                <button onclick="window.switchScreen('admin')" class="btn-dark">НАЗАД К СПИСКУ</button>
+            </div>
+        </div>
+
+        <div id="editor" class="screen">
+            <div class="content-padding">
+                <h2 id="editor-title">Редактирование</h2>
+                
+                <label class="input-label">Тип материала:</label>
+                <select id="edit-type" class="input-field" onchange="window.toggleEditorFields()">
+                    <option value="photo">Угадай по фото</option>
+                    <option value="date">Сопоставь дату и событие</option>
+                    <option value="error">Найди ошибку в тексте</option>
+                </select>
+                
+                <label class="input-label">Текст вопроса:</label>
+                <textarea id="edit-q" placeholder="Текст..." class="input-field" rows="3"></textarea>
+                
+                <div id="div-edit-img">
+                    <label class="input-label">Ссылка на фото:</label>
+                    <input type="text" id="edit-img" placeholder="https://..." class="input-field">
+                </div>
+                
+                <div class="options-box">
+                    <input type="text" id="edit-opt0" placeholder="Правильный ответ" class="input-field border-green">
+                    <input type="text" id="edit-opt1" placeholder="Вариант 1" class="input-field">
+                    <input type="text" id="edit-opt2" placeholder="Вариант 2" class="input-field">
+                    <input type="text" id="edit-opt3" placeholder="Вариант 3" class="input-field">
+                </div>
+                
+                <button onclick="window.saveQuestion()" class="btn-primary">УТВЕРДИТЬ</button>
+                <button onclick="window.switchScreen('manager')" class="btn-dark">ОТМЕНИТЬ</button>
+            </div>
+        </div>
+
+        <div id="game" class="screen">
+            <div class="game-header">
+                <div id="game-title-display" class="header-title">Операция</div>
+                <div id="game-step" class="step-counter">1 / 1</div>
+            </div>
+            <div class="content-padding">
+                <div class="text-center"><span id="game-format-label" class="format-badge">Задание</span></div>
+                <h3 id="game-question" class="q-text">Текст вопроса...</h3>
+                <div id="photo-container" class="photo-wrapper">
+                    <img id="game-photo" src="" alt="Фото задания">
+                </div>
+                <div id="game-options" class="options-grid"></div>
+            </div>
+        </div>
+
+        <div id="result" class="screen">
+            <div class="content-padding text-center centered-content">
+                <h2>ОПЕРАЦИЯ ЗАВЕРШЕНА</h2>
+                <p class="score-text">Ваш результат: <br><span id="final-score" class="highlight-text">0/0</span></p>
+                <input type="text" id="player-name" placeholder="Боец..." class="input-field text-center">
+                <button onclick="window.submitScore()" class="btn-primary">ВНЕСТИ В СПИСКИ</button>
+                <button onclick="window.showMenu()" class="btn-text">Вернуться в меню</button>
+            </div>
+        </div>
+
+        <div id="lider" class="screen">
+            <div class="game-header" style="justify-content: center;">
+                <h2 style="margin:0; color:white; font-size:20px;">⭐ ГЕРОИ ОПЕРАЦИЙ ⭐</h2>
+            </div>
+            <div class="content-padding">
+                <div id="leader-data" class="leader-list"></div>
+                <button onclick="window.showMenu()" class="btn-dark mt-20">ВЕРНУТЬСЯ В ШТАБ</button>
+            </div>
+        </div>
+
     </div>
 
     <script type="module" src="script.js"></script>

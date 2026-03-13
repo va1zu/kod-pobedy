@@ -1,335 +1,225 @@
 /* =========================================
-   ПАЛИТРА И ГЛОБАЛЬНЫЕ НАСТРОЙКИ
+   1. ПАЛИТРА И ШРИФТЫ
    ========================================= */
 :root {
-    --red-army: #ba1616;       
-    --red-dark: #820e0e;       
-    --gold: #dfab23;           
-    --dark-bg: #1c1a17;        
+    --red-army: #ba1616;      
+    --red-dark: #820e0e;      
+    --gold: #dfab23;          
+    --dark-bg: #1c1a17;       
     --text-main: #2b2722;
     --font-heading: 'Playfair Display', serif; 
     --font-text: 'Roboto', sans-serif;
-    --transition: all 0.3s ease;
 }
 
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; outline: none; }
 
+/* =========================================
+   2. КАСТОМНЫЙ СКРОЛЛБАР
+   ========================================= */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #e3ded5; border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--red-army); }
+
+/* =========================================
+   3. БАЗОВЫЙ ФОН (РАЗДЕЛИТЕЛЬ 50/50)
+   ========================================= */
 body {
     font-family: var(--font-text);
-    /* Темный градиент поверх картинки для читаемости */
+    background-color: #1a1512;
+    margin: 0; padding: 15px;
+    display: flex; justify-content: center; align-items: center; 
+    min-height: 100vh; color: var(--text-main);
+    position: relative; 
+    overflow: hidden; /* Скрываем внешний скролл, крутиться будет только внутри карточки */
+}
+
+/* Левая половина фона */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; 
+    width: 50%; height: 100%;
+    /* Градиент и картинка левой стороны */
     background: 
-        linear-gradient(rgba(15, 10, 10, 0.75), rgba(15, 10, 10, 0.85)), 
-        url('https://n1s2.hsmedia.ru/aa/d8/45/aad845bcb80976a78d1902a3524071b9/1200x629_0xac120003_11534280411651851308.jpeg') no-repeat center center fixed;
-    background-size: cover;
-    margin: 0; 
-    padding: 15px;
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    min-height: 100vh; 
-    color: var(--text-main);
+        linear-gradient(rgba(15, 10, 10, 0.4), rgba(15, 10, 10, 0.8)),
+        url('leftfone.jpeg') center/cover no-repeat;
+    z-index: -1;
+}
+
+/* Правая половина фона */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0; right: 0; 
+    width: 50%; height: 100%;
+    /* Градиент и картинка правой стороны */
+    background: 
+        linear-gradient(rgba(15, 10, 10, 0.4), rgba(15, 10, 10, 0.8)),
+        url('rightfone.jpg') center/cover no-repeat;
+    z-index: -1;
 }
 
 /* =========================================
-   ГЛАВНЫЙ КОНТЕЙНЕР (ТЕКСТУРА БУМАГИ)
+   4. ГЛАВНЫЙ КОНТЕЙНЕР (С ВНУТРЕННИМ СКРОЛЛОМ)
    ========================================= */
 .app-container {
-    background: linear-gradient(rgba(245, 240, 230, 0.95), rgba(245, 240, 230, 0.95)), 
-                url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Old_paper_texture.jpg/800px-Old_paper_texture.jpg');
-    width: 100%; 
-    max-width: 480px; 
-    min-height: 680px; 
-    border-radius: 12px; 
-    box-shadow: 0 20px 60px rgba(0,0,0,0.8), 0 0 0 4px var(--dark-bg);
-    position: relative; 
-    display: flex; 
-    flex-direction: column; 
-    overflow: hidden;
+    background: 
+        linear-gradient(rgba(245, 240, 230, 0.95), rgba(245, 240, 230, 0.95)), 
+        url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Old_paper_texture.jpg/800px-Old_paper_texture.jpg');
+    width: 100%; max-width: 480px;
+    height: 95vh; /* Окно всегда на экране */
+    overflow-y: auto; /* Скролл внутри карточки */
+    border-radius: 8px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.8), 0 0 0 4px var(--dark-bg);
+    display: flex; flex-direction: column;
+    position: relative;
+    z-index: 1; /* Карточка поверх разделенного фона */
 }
 
-/* =========================================
-   ГЕОРГИЕВСКАЯ ЛЕНТА (ОСНОВНАЯ)
-   ========================================= */
+/* Лента сверху */
 .george-ribbon {
-    height: 14px; 
-    width: 100%;
+    height: 14px; width: 100%;
     background: repeating-linear-gradient(90deg, #f37021 0, #f37021 15px, #111111 15px, #111111 30px);
-    border-bottom: 2px solid var(--dark-bg); 
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3); 
-    z-index: 10;
+    border-bottom: 2px solid var(--dark-bg);
+    flex-shrink: 0; /* Не дает ленте сплющиться */
 }
 
 /* =========================================
-   ЛОГОТИП И КОМПОЗИЦИЯ (БЕЗ ДВИЖЕНИЯ)
+   5. ЭКРАНЫ И НАВИГАЦИЯ
    ========================================= */
-.logo-wrapper {
-    position: relative; 
-    display: inline-block; 
-    margin: 20px 0;
-}
-
-.main-logo-star {
-    position: relative; 
-    width: 150px; 
-    height: auto; 
-    z-index: 2;
-    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6));
-    /* АНИМАЦИЯ PULSE УДАЛЕНА */
-}
-
-.css-ribbon {
-    position: absolute; 
-    top: 50%; 
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 240px; 
-    height: 45px;
-    background: repeating-linear-gradient(-45deg, #f37021 0, #f37021 12px, #111111 12px, #111111 24px);
-    z-index: 1; 
-    border-radius: 3px; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.7);
-}
-
-.css-ribbon::before, .css-ribbon::after {
-    content: ''; 
-    position: absolute; 
-    top: 8px; 
-    width: 40px; 
-    height: 45px;
-    background: repeating-linear-gradient(-45deg, #f37021 0, #f37021 12px, #111111 12px, #111111 24px);
-    z-index: -1; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.7);
-}
-
-.css-ribbon::before { left: -20px; transform: rotate(15deg); }
-.css-ribbon::after { right: -20px; transform: rotate(-15deg); }
-
-/* =========================================
-   ЭКРАНЫ И НАВИГАЦИЯ
-   ========================================= */
-.screen { 
-    display: none; 
-    animation: fadeIn 0.4s ease; 
-    flex-grow: 1; 
-    flex-direction: column; 
-}
-
+.screen { display: none; animation: fadeIn 0.4s ease; flex-direction: column; flex-grow: 1; }
 .screen.active { display: flex; }
+.content-padding { padding: 30px 25px; display: flex; flex-direction: column; flex-grow: 1; }
+.centered-content { justify-content: center; }
 
-.content-padding { 
-    padding: 30px 25px; 
-    flex-grow: 1; 
-    display: flex; 
-    flex-direction: column; 
-}
-
-.scrollable { overflow-y: auto; }
-
-@keyframes fadeIn { 
-    from { opacity: 0; transform: translateY(10px); } 
-    to { opacity: 1; transform: translateY(0); } 
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* =========================================
-   ОБЛОЖКА И ТЕКСТЫ
+   6. ОБЛОЖКА И ОРДЕН
    ========================================= */
 .menu-cover {
     background: radial-gradient(circle, var(--red-army) 0%, var(--red-dark) 100%);
-    color: white; 
-    padding: 30px 20px; 
-    text-align: center; 
-    border-bottom: 4px solid var(--gold);
-    box-shadow: inset 0 0 30px rgba(0,0,0,0.6), 0 5px 15px rgba(0,0,0,0.4);
+    color: white; padding: 40px 20px 30px;
+    text-align: center; border-bottom: 4px solid var(--gold);
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.6);
 }
 
-.main-title { 
-    font-family: var(--font-heading); 
-    font-size: 42px; 
-    font-weight: 900;
-    margin: 0; 
-    letter-spacing: 2px; 
-    color: #fff; 
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+.logo-wrapper {
+    position: relative; display: inline-flex; justify-content: center; align-items: center;
+    margin-bottom: 20px; min-height: 120px;
 }
 
-.subtitle { 
-    margin: 10px 0 0 0; 
-    font-size: 14px; 
-    color: var(--gold); 
-    font-weight: 700; 
-    letter-spacing: 2px; 
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.8); 
+/* Орден - уменьшен и статичен */
+.main-logo-star {
+    width: 120px; height: auto; position: relative; z-index: 2;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6));
 }
 
-.section-title {
-    text-align: center; 
-    position: relative; 
-    font-size: 14px; 
-    font-weight: 700;
-    color: var(--dark-bg); 
-    letter-spacing: 2px; 
-    margin-bottom: 25px;
+/* Лента ЗА орденом */
+.css-ribbon {
+    position: absolute; width: 230px; height: 42px;
+    background: repeating-linear-gradient(-45deg, #f37021 0, #f37021 12px, #111111 12px, #111111 24px);
+    z-index: 1; border-radius: 2px; box-shadow: 0 5px 15px rgba(0,0,0,0.6);
 }
 
-.section-title span { 
-    background: #f0ead6; 
-    padding: 0 15px; 
-    position: relative; 
-    z-index: 1; 
-    border-radius: 4px;
+.css-ribbon::before, .css-ribbon::after {
+    content: ''; position: absolute; top: 8px; width: 45px; height: 42px;
+    background: repeating-linear-gradient(-45deg, #f37021 0, #f37021 12px, #111111 12px, #111111 24px);
+    z-index: -1;
 }
-
-.section-title::before { 
-    content: ""; 
-    position: absolute; 
-    left: 0; 
-    top: 50%; 
-    width: 100%; 
-    height: 1px; 
-    background: #ccc; 
-    z-index: 0; 
-}
+.css-ribbon::before { left: -25px; transform: rotate(15deg); }
+.css-ribbon::after { right: -25px; transform: rotate(-15deg); }
 
 /* =========================================
-   КНОПКИ
+   7. ТИПОГРАФИКА
    ========================================= */
-.button-group { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 12px; 
-}
+.main-title { font-family: var(--font-heading); font-size: 42px; font-weight: 900; margin: 0; letter-spacing: 2px; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+.subtitle { margin: 8px 0 0 0; font-size: 14px; color: var(--gold); font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+
+h2 { font-family: var(--font-heading); color: var(--red-dark); margin: 0 0 20px 0; font-size: 28px; text-transform: uppercase; text-align: center; }
+
+.section-title { text-align: center; position: relative; font-size: 14px; font-weight: 700; color: var(--dark-bg); letter-spacing: 2px; margin: 30px 0; }
+.section-title span { background: #f0ead6; padding: 0 15px; position: relative; z-index: 1; }
+.section-title::before { content: ""; position: absolute; left: 0; top: 50%; width: 100%; height: 2px; background: var(--dark-bg); }
+
+.text-center { text-align: center; }
+.text-muted { color: #666; font-size: 14px; font-weight: 500;}
+
+/* =========================================
+   8. КНОПКИ
+   ========================================= */
+.button-group { display: flex; flex-direction: column; gap: 15px; }
 
 button {
-    font-family: var(--font-text); 
-    background: linear-gradient(180deg, #e3ded5 0%, #c4bcae 100%);
-    color: var(--dark-bg); 
-    border: 1px solid #8f8573; 
-    padding: 16px; 
-    width: 100%; 
-    border-radius: 8px; 
-    font-size: 16px;
-    font-weight: 700; 
-    cursor: pointer; 
-    transition: var(--transition);
-    text-transform: uppercase; 
-    letter-spacing: 1px;
-    box-shadow: 0 4px 0 #8f8573, 0 4px 8px rgba(0,0,0,0.1);
+    font-family: var(--font-text); background: linear-gradient(180deg, #e3ded5 0%, #c4bcae 100%);
+    color: var(--dark-bg); border: 2px solid #8f8573; padding: 18px; width: 100%; border-radius: 6px; font-size: 16px;
+    font-weight: 700; cursor: pointer; transition: all 0.2s ease;
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.5), 0 4px 6px rgba(0,0,0,0.2); text-transform: uppercase; margin-bottom: 12px;
 }
+button:hover { transform: translateY(-2px); background: linear-gradient(180deg, #ece9e2 0%, #d1c9bc 100%); }
+button:active { transform: translateY(1px); box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), 0 2px 2px rgba(0,0,0,0.1); }
 
-button:hover { 
-    transform: translateY(-2px); 
-    background: linear-gradient(180deg, #ece9e2 0%, #d1c9bc 100%);
-    box-shadow: 0 6px 0 #8f8573, 0 6px 12px rgba(0,0,0,0.15);
-}
+.btn-primary { background: linear-gradient(180deg, var(--red-army) 0%, var(--red-dark) 100%); color: white; border: 2px solid #540606; text-shadow: 1px 1px 2px rgba(0,0,0,0.6); }
+.btn-primary:hover { background: linear-gradient(180deg, #d42222 0%, var(--red-army) 100%); }
 
-button:active { 
-    transform: translateY(2px); 
-    box-shadow: 0 1px 0 #8f8573;
-}
+.btn-alt { background: linear-gradient(180deg, #fcdb74 0%, var(--gold) 100%); color: #4a3400; border: 2px solid #a37c0f; }
+.btn-alt:hover { background: linear-gradient(180deg, #ffe58f 0%, #e6c13a 100%); }
 
-.btn-primary { 
-    background: linear-gradient(180deg, var(--red-army) 0%, var(--red-dark) 100%); 
-    color: white; 
-    border: 1px solid #540606; 
-    box-shadow: 0 4px 0 #540606;
-}
+.btn-dark { background: linear-gradient(180deg, #444 0%, #222 100%); color: white; border: 2px solid #000; }
+.btn-success { background: linear-gradient(180deg, #6c8a5a 0%, #4a5d3f 100%); color: white; border: 2px solid #283321; }
 
-.btn-primary:hover {
-    background: linear-gradient(180deg, #d42222 0%, var(--red-army) 100%);
-    box-shadow: 0 6px 0 #3b0303;
-}
+.btn-text { background: transparent; color: #555; font-size: 13px; padding: 10px; margin-top: auto; border: none; box-shadow: none; text-decoration: underline; }
+.btn-text:hover { color: var(--red-army); background: transparent; transform: none; box-shadow: none; }
 
-.btn-alt { 
-    background: linear-gradient(180deg, #fcdb74 0%, var(--gold) 100%); 
-    color: #4a3400; 
-    border: 1px solid #a37c0f; 
-    box-shadow: 0 4px 0 #a37c0f;
-}
-
-.btn-alt:hover {
-    background: linear-gradient(180deg, #ffe58f 0%, #e6c13a 100%);
-    box-shadow: 0 6px 0 #7e5f0a;
-}
-
-.btn-text { 
-    background: transparent; 
-    color: #666; 
-    border: none; 
-    box-shadow: none; 
-    text-decoration: underline; 
-    font-size: 13px;
-}
-
-.btn-text:hover {
-    background: transparent;
-    color: var(--red-army);
-    box-shadow: none;
-    transform: none;
-}
+.divider { border: 0; height: 1px; background: rgba(0,0,0,0.2); margin: 25px 0; border-bottom: 1px solid rgba(255,255,255,0.5); }
+.mt-20 { margin-top: 20px; }
 
 /* =========================================
-   ИГРОВОЙ ИНТЕРФЕЙС
+   9. ФОРМЫ
    ========================================= */
-.game-header { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    background: var(--dark-bg); 
-    padding: 15px 25px; 
-    color: white; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+.input-label { display: block; font-size: 12px; font-weight: 700; color: var(--dark-bg); margin: 15px 0 8px 0; text-transform: uppercase; }
+.input-field {
+    width: 100%; padding: 16px; margin-bottom: 12px;
+    border: 2px solid #a69b88; border-radius: 4px; box-sizing: border-box;
+    font-size: 16px; font-family: "Courier New", Courier, monospace; 
+    background: #fffcf5; font-weight: bold;
 }
-
-.header-title { color: var(--gold); text-transform: uppercase; font-weight: 700; font-size: 16px; }
-
-.q-text { 
-    font-family: var(--font-heading); 
-    font-size: 24px; 
-    margin: 10px 0 25px 0; 
-    text-align: center; 
-    line-height: 1.3;
-}
-
-.photo-wrapper { 
-    margin-bottom: 25px; 
-    border: 4px solid #e1d9c8; 
-    border-radius: 8px; 
-    overflow: hidden; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
-}
-
-#game-photo { 
-    width: 100%; 
-    max-height: 250px; 
-    object-fit: cover; 
-    display: block; 
-}
+.input-field:focus { outline: none; border-color: var(--red-army); background: #fff; }
+.border-green { border: 2px solid #4a5d3f !important; background-color: #f2f7ef; }
 
 /* =========================================
-   ПОЛЯ ВВОДА
+   10. ИГРА И ЛИДЕРЫ
    ========================================= */
-.input-field { 
-    width: 100%; 
-    padding: 14px; 
-    margin-bottom: 12px; 
-    border: 2px solid #a69b88; 
-    border-radius: 6px; 
-    font-size: 16px; 
-    background: #fffcf5; 
-    transition: var(--transition);
-}
+.admin-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.admin-item { display: flex; justify-content: space-between; align-items: center; background: #f4eee1; padding: 15px; border-radius: 4px; border: 1px solid #d4ccbd; border-left: 6px solid var(--red-army); font-weight: bold; }
+.admin-item button { padding: 8px 12px; margin: 0; width: auto; font-size: 13px; }
 
-.input-field:focus { 
-    outline: none; 
-    border-color: var(--red-army); 
-    background: #fff; 
-}
+.game-header { display: flex; justify-content: space-between; align-items: center; background: radial-gradient(circle, #3a3835 0%, var(--dark-bg) 100%); padding: 15px 25px; color: white; }
+.header-title { font-size: 18px; font-weight: 700; color: var(--gold); text-transform: uppercase;}
+.step-counter { font-size: 16px; font-weight: bold; color: #fff;}
 
-.divider { 
-    border: 0; 
-    height: 1px; 
-    background: rgba(0,0,0,0.1); 
-    margin: 25px 0; 
-}
+.format-badge { display: inline-block; padding: 6px 16px; background: var(--dark-bg); color: var(--gold); border-radius: 4px; font-size: 12px; margin-bottom: 20px; font-weight: 700; border: 2px solid var(--gold); }
+.q-text { font-family: var(--font-heading); font-size: 24px; margin: 0 0 25px 0; font-weight: 900; text-align: center; color: var(--dark-bg); }
+
+.photo-wrapper { margin-bottom: 25px; border-radius: 4px; overflow: hidden; text-align: center; border: 6px solid #e1d9c8; background: #fff; padding: 10px; }
+#game-photo { width: 100%; max-height: 250px; object-fit: contain; display: block; }
+
+.options-grid { display: flex; flex-direction: column; gap: 12px; flex-grow: 1;}
+.opt-btn { background: #fdfdfd; color: var(--dark-bg); border: 2px solid #a69b88; font-size: 18px; box-shadow: 0 3px 0 #a69b88; }
+.opt-btn.correct { background: #4a5d3f !important; color: white !important; border-color: #283321 !important; box-shadow: 0 3px 0 #283321 !important;}
+.opt-btn.wrong { background: var(--red-army) !important; color: white !important; border-color: #540606 !important; box-shadow: 0 3px 0 #540606 !important;}
+
+.score-text { font-size: 18px; margin-bottom: 20px; color: #444; font-weight: bold;}
+.highlight-text { font-family: var(--font-heading); font-size: 48px; font-weight: 900; color: var(--red-army); display: block; margin-top: 5px; }
+
+.leader-list { display: flex; flex-direction: column; gap: 12px; }
+.leader-card { display: flex; align-items: center; padding: 15px; background: #fcfbf8; border-radius: 6px; border: 1px solid #d4ccbd; }
+.leader-card:nth-child(1) { border: 2px solid var(--gold); background: #fffcf0; }
+.leader-card:nth-child(2) { border: 2px solid #a0a0a0; background: #fafafa; }
+.leader-card:nth-child(3) { border: 2px solid #cd7f32; background: #fffaf5; }
+
+.medal-slot { font-size: 24px; width: 45px; text-align: center; font-weight: 900; color: var(--dark-bg); font-family: var(--font-heading);}
+.leader-info { flex-grow: 1; text-align: left; }
+.leader-name { font-weight: 900; font-size: 18px; display: block; color: var(--dark-bg); }
+.leader-score { font-family: var(--font-heading); font-weight: 900; color: var(--red-army); font-size: 26px; }
